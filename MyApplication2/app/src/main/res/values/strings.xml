@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="client_id"></string>
+    <string name="client_secret"></string>
+    <string name="logout">로그아웃</string>
+</resources>
