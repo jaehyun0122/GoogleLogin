@@ -12,7 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Scope
 import com.google.android.gms.tasks.Task
+import com.google.api.services.youtube.YouTubeScopes
 
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
         if(account != null){
-            Log.d("jay", "already Login")
+            Log.d("jay", "already Login "+account.email)
         }else{
             Log.d("jay", "first")
         }
@@ -36,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
+            .requestScopes(Scope(YouTubeScopes.YOUTUBEPARTNER))
             .requestServerAuthCode(getString(R.string.client_id))
             .build()
 
@@ -68,19 +71,20 @@ class MainActivity : ComponentActivity() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         Log.d("jay", result.resultCode.toString())
-            val data: Intent? = result.data
-            val task: Task<GoogleSignInAccount> =
-                GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignData(task)
+
+        val data: Intent? = result.data
+        val task: Task<GoogleSignInAccount> =
+            GoogleSignIn.getSignedInAccountFromIntent(data)
+
+        handleSignData(task)
     }
 
     private fun handleSignData(completedTask: Task<GoogleSignInAccount>){
         try {
             val account = completedTask.getResult(ApiException::class.java)
-
             val authCode = account.serverAuthCode
 
-            LoginRepository(this).getAccessToken(authCode!!)
+            LoginRepository(this   ).getAccessToken(authCode!!)
 
         }catch (e: ApiException){
             Log.e("jay", "error "+e.printStackTrace())

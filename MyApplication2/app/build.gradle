@@ -66,6 +66,9 @@ dependencies {
 
     implementation 'com.google.android.gms:play-services-auth:20.5.0'
 
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev183-1.22.0'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+
     // retrofit2
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
